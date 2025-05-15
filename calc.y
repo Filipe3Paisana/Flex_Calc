@@ -22,12 +22,13 @@ Simbolo *s;
 %token <i_val> INT
 %token <r_val> REAL
 %token <id> ID
+%token <id> CLEAR_VAR LIST_VAR
 
 %token EXP SHR SHL INC DEC
 %token CAST_INT
 
-%token CLEAR_ALL CLEAR_INT CLEAR_REAL CLEAR_VAR
-%token LIST_ALL LIST_INT LIST_REAL LIST_VAR
+%token CLEAR_ALL CLEAR_INT CLEAR_REAL
+%token LIST_ALL LIST_INT LIST_REAL
 
 // --- tipos de retorno das expressões ---
 %type <r_val> expr
@@ -60,12 +61,14 @@ line:
                               s->tipo = TIPO_REAL;
                               s->valor.r_val = $3;
                               printf("%.2f\n", $3);
+                              free($1);
                            }
   | ID '=' expr_int '\n'   {
                               s = procuraOuCria($1);
                               s->tipo = TIPO_INT;
                               s->valor.i_val = $3;
                               printf("%d\n", $3);
+                              free($1);
                            }
   | INC ID '\n'            {
                               s = procuraOuCria($2);
@@ -75,6 +78,7 @@ line:
                                   s->valor.r_val += 1.0;
                                   printf("%.2f\n", s->valor.r_val);
                               }
+                              free($2);
                            }
   | DEC ID '\n'            {
                               s = procuraOuCria($2);
@@ -84,15 +88,16 @@ line:
                                   s->valor.r_val -= 1.0;
                                   printf("%.2f\n", s->valor.r_val);
                               }
+                              free($2);
                            }
   | CLEAR_ALL '\n'         { limpaTabela(); }
   | CLEAR_INT '\n'         { limpaPorTipo(TIPO_INT); }
   | CLEAR_REAL '\n'        { limpaPorTipo(TIPO_REAL); }
-  | CLEAR_VAR '\n'         { limpaVariavel($1); }
+  | CLEAR_VAR '\n'         { limpaVariavel($1); free($1); }
   | LIST_ALL '\n'          { listaTabela(); }
   | LIST_INT '\n'          { listaPorTipo(TIPO_INT); }
   | LIST_REAL '\n'         { listaPorTipo(TIPO_REAL); }
-  | LIST_VAR '\n'          { listaVariavel($1); }
+  | LIST_VAR '\n'          { listaVariavel($1); free($1); }
   ;
 
 expr:
@@ -102,6 +107,8 @@ expr:
   | expr '/' expr         { $$ = $1 / $3; }
   | expr EXP expr         { $$ = pow($1, $3); }
   | expr '%' expr         { $$ = fmod($1, $3); }
+  | expr SHL expr         { $$ = (int)$1 << (int)$3; }
+  | expr SHR expr         { $$ = (int)$1 >> (int)$3; }
   | '-' expr %prec UMINUS { $$ = -$2; }
   | '(' expr ')'          { $$ = $2; }
   | '(' CAST_INT ')' expr { $$ = (int)$4; }
@@ -114,6 +121,7 @@ expr:
                                 $$ = (float)s->valor.i_val;
                             else
                                 $$ = s->valor.r_val;
+                            free($1);
                           }
   | INT                   { $$ = (float)$1; }
   | REAL                  { $$ = $1; }
@@ -143,6 +151,7 @@ expr_int:
                                       $$ = s->valor.i_val;
                                   else
                                       $$ = (int)s->valor.r_val;
+                                  free($1);
                                 }
   | INT                         { $$ = $1; }
   ;

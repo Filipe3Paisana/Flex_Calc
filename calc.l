@@ -2,11 +2,6 @@
 #include "y.tab.h"
 #include <stdlib.h>
 #include <string.h>
-
-extern double yylval_real;
-extern int yylval_int;
-extern char *yylval_id;
-
 %}
 
 DIGITO     [0-9]
@@ -41,7 +36,7 @@ INT        {DIGITO}+
 @CLEAR[ \t]+INT   { return CLEAR_INT; }
 @CLEAR[ \t]+REAL  { return CLEAR_REAL; }
 @CLEAR[ \t]+{ID}  {
-                   yylval_id = strdup(yytext + 7);
+                   yylval.id = strdup(yytext + 7);
                    return CLEAR_VAR;
                  }
 @CLEAR      { return CLEAR_ALL; }
@@ -49,23 +44,23 @@ INT        {DIGITO}+
 @LIST[ \t]+INT    { return LIST_INT; }
 @LIST[ \t]+REAL   { return LIST_REAL; }
 @LIST[ \t]+{ID}   {
-                   yylval_id = strdup(yytext + 6);
+                   yylval.id = strdup(yytext + 6);
                    return LIST_VAR;
                  }
 @LIST       { return LIST_ALL; }
 
 {REAL}      {
-                yylval_real = atof(yytext);
+                yylval.r_val = atof(yytext);
                 return REAL;
             }
 
 {INT}       {
-                yylval_int = atoi(yytext);
+                yylval.i_val = atoi(yytext);
                 return INT;
             }
 
 {ID}        {
-                yylval_id = strdup(yytext);
+                yylval.id = strdup(yytext);
                 return ID;
             }
 

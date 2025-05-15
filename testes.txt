@@ -2,3 +2,4 @@
 x = 2**3
 alfa = (x<<1)*2.5
 alfa+1
+@LIST
