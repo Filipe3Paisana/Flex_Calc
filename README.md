@@ -1,42 +1,44 @@
-# 🧮 Calculadora FLEX/BYACC — Compiladores 2025
+# FlexCalc
 
-Projeto desenvolvido no âmbito da unidade curricular de **Compiladores**, do **3.º ano da Licenciatura em Engenharia Informática**.
-
----
-
-## 📌 Descrição
-
-Este projeto consiste na implementação de uma calculadora avançada, utilizando as ferramentas **FLEX** (analisador léxico) e **BYACC** (analisador sintáctico), com funcionalidades inspiradas na linguagem C.
-
-### ✅ Funcionalidades principais:
-
-- **Suporte a dois tipos numéricos**: inteiros e reais
-- **Operações aritméticas**: `+`, `-`, `*`, `/`, `%`
-- **Potência**: `**`
-- **Operações bit a bit**: `&`, `|`, `^`, `>>`, `<<`, `~`
-- **Uso de parêntesis** e **valores negativos (operador unário -)**
-- **Incremento e decremento**: `++`, `--`
-- **Cast de reais para inteiros**: `(int)`
-- **Atribuição de valores a variáveis**
+**FlexCalc** é uma calculadora avançada desenvolvida com **FLEX** e **BYACC**, no contexto do projeto da UC de Compiladores. Permite efetuar operações com números inteiros e reais, seguindo a sintaxe da linguagem C e suportando comandos de gestão de memória.
 
 ---
 
-## 🧠 Tabela de Símbolos
+## 🧩 Funcionalidades
 
-- Armazena variáveis do tipo **inteiro** e **real**
-- Os nomes das variáveis seguem as regras de identificadores da linguagem C
-- Cada entrada na tabela regista o **nome**, **tipo** e **valor actual** da variável
+- Suporte a **números inteiros e reais**
+- Atribuição de valores a variáveis
+- Operações aritméticas: `+`, `-`, `*`, `/`, `%`, `**` (potência)
+- Operações bit a bit: `&`, `|`, `^`, `~`, `>>`, `<<`
+- Parêntesis e menos unário
+- Incremento (`++`) e decremento (`--`)
+- Cast para inteiro: `[(int)]`
+- Precedência e associatividade idêntica à linguagem **C**
+- Tabela de símbolos com tipo, nome e valor
+- Comandos especiais:
+  - `@CLEAR`, `@CLEAR INT`, `@CLEAR REAL`, `@CLEAR id`
+  - `@LIST`, `@LIST INT`, `@LIST REAL`, `@LIST id`
 
 ---
 
-## ✍️ Exemplo de Execução
+## 🔧 Compilação
 
-```text
-2+5*3
- 17
-x = 2**3
- 8
-alfa = (x<<1)*2.5
- 40.0
-alfa+1
- 41.0
+Certifica-te de que tens o **flex**, **bison** e **gcc** instalados.
+
+Para compilar o projeto:
+
+```bash
+make
+
+./flexcalc
+```
+ou, para correr com o ficheiro de testes de imediato: 
+```bash
+./flexcalc < testes.txt
+```
+
+Para limpar os ficheiros gerados: 
+```bash
+make clean
+````
+
