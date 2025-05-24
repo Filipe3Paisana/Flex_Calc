@@ -58,9 +58,15 @@ line:
   | expr_int '\n'          { printf("%d\n", $1); }
   | ID '=' expr '\n'       {
                               s = procuraOuCria($1);
-                              s->tipo = TIPO_REAL;
-                              s->valor.r_val = $3;
-                              printf("%.2f\n", $3);
+                              if (floor($3) == $3) {
+                                  s->tipo = TIPO_INT;
+                                  s->valor.i_val = (int)$3;
+                                  printf("%d\n", s->valor.i_val);
+                              } else {
+                                  s->tipo = TIPO_REAL;
+                                  s->valor.r_val = $3;
+                                  printf("%.2f\n", s->valor.r_val);
+                              }
                               free($1);
                            }
   | ID '=' expr_int '\n'   {
